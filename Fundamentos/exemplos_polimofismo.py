@@ -23,3 +23,16 @@ altura = int(input("Valor da altura: "))
 # CHAMAR A CLASSE FILHO PARA CIAR O POLIOMORFISMO:
 retangulo = Retangulo(largura, altura)
 print(f"Área o retangulo é: {retangulo.area()}")
+
+class Circulo(Forma):
+    def __init__(self, raio, pi):
+        self.raio = raio
+        self.pi = pi
+    def area (self):
+        return self.pi*self.raio**2
+forma = Forma() # cria instancia
+pi = 3.14
+raio = int(input("Valor do raio: "))
+
+circulo = Circulo(raio, pi)
+print(f"Área do circulo é: {circulo.area()}")
