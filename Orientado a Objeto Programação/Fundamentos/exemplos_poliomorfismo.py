@@ -15,7 +15,7 @@ class Retangulo(Forma):
     def area(self): # retorna o resultado
         return self.largura*self.altura
 
-# obragtorio instranciar o objeto python
+# obragtorio instanciar o objeto python
 forma = Forma() # cria instancia
 largura = int(input("Valor da largura: "))
 altura = int(input("Valor da altura: "))
@@ -29,7 +29,7 @@ class Circulo(Forma):
         self.raio = raio
         self.pi = pi
     def area (self):
-        return self.pi*self.raio**2
+        return self.pi*self.raio**2 #3.14(self.raio*22)
 forma = Forma() # cria instancia
 pi = 3.14
 raio = int(input("Valor do raio: "))

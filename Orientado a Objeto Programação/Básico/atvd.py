@@ -34,8 +34,6 @@ class Biblioteca:
         return self.livros[indice -1]
 
 
-
-
 titulos = ["Quarta Asa","Jantar Secreto", "Jane Eyre",
            "Gente pobre", "Crime e Castigo", "Vidas Secas",
            "Hora da Estrela", "livro2", "livro3", "livro4"]
