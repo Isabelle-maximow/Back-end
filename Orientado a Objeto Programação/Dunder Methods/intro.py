@@ -74,4 +74,16 @@ print(lista[0])
 lista[1] = 99 # 20 vira 99
 
 
-'''__ca__ '''
+'''
+quando usar metodos especiais? quando vc quiser
+que o objeto se comporte como uma lista pu dicionario
+com o __getitem__ ou __setitem__
+
+para retornar uma string do objeto co o __str__ ou __repr__
+
+para definir operações matematicas ex: __add__
+
+para chamar um objeto com comportamento de função __call__
+
+mais utilizado metodo construtor __init__, para definir atributos do objeto
+'''
