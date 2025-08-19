@@ -1,6 +1,5 @@
 import sqlite3
 BANCO_DE_DADOS = "aluno.db"
-
 class Banco:
     def __init__(self, nome = BANCO_DE_DADOS):
         self.nome = nome
@@ -15,5 +14,5 @@ class Banco:
                         nota2 REAL NOT NULL,
                         nota3 REAL NOT NULL,
                         media REAL NOT NULL,
-                        situacao TEXT NOT NULL)''')
+                        situacao TEXT NOT NULL)''')  
         self.conexao.commit()
