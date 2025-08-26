@@ -1,21 +1,29 @@
-import sqlite3
+import mysql.connector
 
-BANCO_DE_DADOS = "aluno.db"
+CONFIG_BANCO = {
+    'host': 'localhost', # local do servidor de banco
+    'user': 'root', # usuario que vi logar no servidor
+    'password': 'dev1t@24', # senha definida no servidor 
+    'database': 'BANCO 02', # nome do banco de dados
+}
+conexao = mysql.connector.connect(**CONFIG_BANCO) # conectando
+cursor = conexao.cursor()
+
+# BANCO_DE_DADOS = "aluno.db"
 class Banco:
-    def __init__(self, nome = BANCO_DE_DADOS):
-        self.nome = nome
-        self.conexao = sqlite3.connect(self.nome)
-        self.cursor = self.conexao.cursor()
-        self.conectar_db()
+    def __init__(self, **CONFIG_BANCO):
+        self.conexao = mysql.connector.connect(**CONFIG_BANCO) # conectando
+        self.cursor = conexao.cursor()
+        # self.conectar_db()
         
     def conectar_db(self):
         self.cursor.execute('''CREATE TABLE IF NOT EXISTS aluno (
-                        nome TEXT NOT NULL,
-                        nota1 REAL NOT NULL,
-                        nota2 REAL NOT NULL,
-                        nota3 REAL NOT NULL,
-                        media REAL NOT NULL,
-                        situacao TEXT NOT NULL)''')  # Criação
+                        nome VARCHAR (100) NOT NULL,
+                        nota1 FLOAT NOT NULL,
+                        nota2 FLOAT NOT NULL,
+                        nota3 FLOAT NOT NULL,
+                        media INT NOT NULL,
+                        situacao VARCHAR (100) NOT NULL)''')  # Criação
         self.conexao.commit()
 
 class Aluno:
@@ -98,6 +106,5 @@ if __name__ == "__main__":
 
 '''
 Exercicio:
-Refatorar o sistema, salvar cadastro em 'alunos.db
-no sqlite, dividir o sistema modularizar e fazer seus devidos imports
+MUDAR P MARIADB
 '''
