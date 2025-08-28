@@ -11,18 +11,20 @@ cursor = conexao.cursor()
 
 # BANCO_DE_DADOS = "aluno.db"
 class Banco:
-    def __init__(self, **CONFIG_BANCO):
-        self.conexao = mysql.connector.connect(**CONFIG_BANCO) # conectando
-        self.cursor = conexao.cursor()
-        # self.conectar_db()
+    def __init__(self, nome_bd = CONFIG_BANCO):
+        self.nome_bd = nome_bd
+        self.conexao = mysql.connector.connect(**self.nome_bd) # conectando
+        self.cursor = self.conexao.cursor()
+        self.conectar_db()
         
-    def conectar_db(self):
+    def conectar_db(self): # criar tabela
         self.cursor.execute('''CREATE TABLE IF NOT EXISTS aluno (
+                        id INT AUTO_INCREMENT PRIMARY KEY,
                         nome VARCHAR (100) NOT NULL,
                         nota1 FLOAT NOT NULL,
                         nota2 FLOAT NOT NULL,
                         nota3 FLOAT NOT NULL,
-                        media INT NOT NULL,
+                        media FLOAT NOT NULL,
                         situacao VARCHAR (100) NOT NULL)''')  # Criação
         self.conexao.commit()
 
@@ -76,7 +78,7 @@ class CadastroAluno:
             aluno.calculo_media()
             self.alunos_.append(aluno)
             self.cursor.execute('''INSERT INTO aluno
-                (nome, nota1, nota2, nota3, media, situacao) VALUES (?,?,?,?,?,?)''',
+                (nome, nota1, nota2, nota3, media, situacao) VALUES (%s,%s,%s,%s,%s,%s)''',
                 (aluno.nome, aluno.notas[0], aluno.notas[1], aluno.notas[2], aluno.media, aluno.situacao))  # Inserção
             
             continuar = input("Digite 's' para sair ou Enter para continuar: ").lower()
