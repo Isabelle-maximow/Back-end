@@ -1,3 +1,7 @@
+'''
+ISABELLE FERREIRA
+24271526
+'''
 import sqlite3
 
 class BancoDeDados:
@@ -9,16 +13,15 @@ class BancoDeDados:
         self.criar_tabela_professor()
         self.criar_tabela_curso()
         
-    # Tabela Aluno
+    # tabela Aluno
     def criar_tabela_aluno(self):
         self.cursor.execute('''CREATE TABLE IF NOT EXISTS alunos (
                             id INTEGER PRIMARY KEY AUTOINCREMENT,
                             nome TEXT NOT NULL,
-                            matricula TEXT NOT NULL,
-                            documento TEXT NOT NULL)''')
+                            matricula TEXT NOT NULL,''')
         self.conexao.commit()
         
-    # Tabela Professor
+    # tabela Professor
     def criar_tabela_professor(self):
         self.cursor.execute('''CREATE TABLE IF NOT EXISTS professores (
                             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -27,7 +30,7 @@ class BancoDeDados:
                             matricula TEXT NOT NULL)''')
         self.conexao.commit()  
         
-    # Tabela Cursos
+    # tabela Cursos
     def criar_tabela_curso(self):
         self.cursor.execute('''CREATE TABLE IF NOT EXISTS cursos (
                             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -43,7 +46,7 @@ class BancoDeDados:
         self.cursor.execute(comando,parametro)
         return self.cursor.fetchall()
     
-#representa um curso
+
 class Curso:
     def __init__(self,nome,periodo):
         self.nome=nome
@@ -52,14 +55,12 @@ class Curso:
     def __str__(self):
         return f"Curso: {self.nome} - Perido: {self.periodo}."
     
-#class pai para alunos e professores
 class Pessoa:
     def __init__(self,nome,data_nasc,matricula):
         self.nome=nome
         self.data_nasc=data_nasc
         self.matricula=matricula
         
-#class filho professor
 class Professor(Pessoa):
     def __init__(self, nome, disciplina, matricula):
         super().__init__(nome, None, matricula)
@@ -73,21 +74,20 @@ class Professor(Pessoa):
         Disciplina: {self.disciplina}
         Matricula: {self.matricula}"""
         
-# class filho  aluno
 class Aluno(Pessoa):
-    def __init__(self, nome, documento, matricula):
+    def __init__(self, nome, matricula):
         super().__init__(nome, None, matricula)
-        self.documento=documento
+        
     
     def __str__(self):
         return f"""Aluno: {self.nome}
-        Matricula: {self.matricula}
-        Documento: {self.documento}"""
+        Matricula: {self.matricula}"""
         
 #classe principal que gerencia o sistema
 class SistemaEscolar:
     def __init__(self):
         self.db=BancoDeDados()
+        
 # ALUNOS 
     #metodo aluno
     def listar_aluno(self):
@@ -98,21 +98,19 @@ class SistemaEscolar:
             print(f"""
                     ID: {i[0]}
                     Nome: {i[1]}
-                    Matricula: {i[2]}
-                    Documento: {i[3]}""")         
+                    Matricula: {i[2]}""")         
              
     #metodo incluir aluno
     def incluir_aluno(self):
         nome= input("Digite o nome do aluno: ").lower()
         matricula=input("Digite a matricula do aluno: ")
-        documento= input("Digite o documento do aluno: ")
-        aluno  = Aluno(nome,documento,matricula)
+        aluno  = Aluno(nome,matricula)
         self.db.executar_comando('''INSERT INTO alunos (
-        nome,matricula,documento) VALUES (?,?,?)''',
-        (aluno.nome, aluno.matricula, aluno.documento))
+        nome,matricul) VALUES (?,?,?)''',
+        (aluno.nome, aluno.matricula))
         print(f"Aluno {nome} adicionado!")
         
-    #meotdo excluir aluno
+    #metodo excluir aluno
     def excluir_aluno(self):
         self.listar_aluno()
         id_aluno = int(input("Digite o id do aluno a ser excluido: "))
@@ -130,8 +128,7 @@ class SistemaEscolar:
                 print(f"""
                         ID: {i[0]}
                         Nome: {i[1]}
-                        Matricula: {i[2]}
-                        Documento: {i[3]}""")
+                        Matricula: {i[2]}""")
 
 # PROFESSORES 
     #metodo professor
@@ -150,7 +147,7 @@ class SistemaEscolar:
     #metodo incluir professor
     def incluir_professor(self):
         nome= input("Digite o nome do professor: ")
-        disciplina=input("Digite a disciplina do professro: ")
+        disciplina=input("Digite a disciplina do professor: ")
         matricula=input("Digite a matricula do professor: ")
         professor  = Professor(nome,disciplina,matricula)
         self.db.executar_comando('''INSERT INTO professores (
@@ -158,7 +155,7 @@ class SistemaEscolar:
         (professor.nome,professor.disciplina,professor.matricula))
         print(f"Professor {nome} adicionado!")  
         
-    #meotdo excluir professor
+    # excluir professor
     def excluir_professor(self):
         self.listar_professor()
         id_professor = int(input("Digite o id do professor a ser exlcuido: "))
@@ -167,19 +164,18 @@ class SistemaEscolar:
         
     #metodo pesquisar professor
     def pesquisar_professor(self):
-        nome_professor = input("nome do professor para pesquisar: ").lower()
+        nome_professor = input("nome do professor: ").lower()
         professor=self.db.buscar_dados("SELECT * FROM professores WHERE nome=?", (nome_professor)) 
         if not professor:
-            print(f"Aluno {nome_professor} não encontado.")
+            print(f"Professor {nome_professor} não encontado.")
         else:
             for i in professor:
                 print(f"""
                         ID: {i[0]}
                         Nome: {i[1]}
-                        Matricula: {i[2]}
-                        Documento: {i[3]}""")
+                        Matricula: {i[2]}""")
 # CURSOS 
-    #Metodo cursos
+    # cursos
     def lista_cursos(self):
         cursos = self.db.buscar_dados("SELECT * FROM cursos")
         if not cursos:
@@ -190,8 +186,8 @@ class SistemaEscolar:
                     nome: {i[1]}
                     periodo: {i[2]}                
                     """) 
-            
-    #Metodo incluir curso
+        
+    # incluir curso
     def incluir_curso(self):
         nome = input("Digite o nome do curso: ")
         periodo = input("Digite o periodo do curso: ")
@@ -201,19 +197,19 @@ class SistemaEscolar:
         (curso.nome,curso.periodo))
         print(f"Curso {nome} cadastrado.")
         
-    #Metodo excluir curso
+    # excluir curso
     def excluir_curso(self):
         self.lista_cursos()
         id_curso = int(input("Digite o id do curso a ser exlcuido: "))
         self.db.executar_comando("DELETE FROM cursos WHERE id=?", (id_curso,))
-        print(f"Curso com {id_curso} deletado com sucesso.")
+        print(f"Curso {id_curso} deletado com sucesso.")
         
-    #Metodo pesquidar curso
+    # pesquidar curso
     def pesquisar_curso(self):
-        nome_curso = input("nome do professor para pesquisar: ").lower()
-        curso=self.db.buscar_dados("SELECT * FROM professores WHERE nome=?", (nome_curso))   
+        nome_curso = input("nome do curso para pesquisar: ").lower()
+        curso=self.db.buscar_dados("SELECT * FROM cursos WHERE nome=?", (nome_curso))   
         if not curso:
-            print(f"Aluno {nome_curso} não encontado.")
+            print(f"Curso {nome_curso} não encontado.")
         else:
             for i in curso:
                 print(f"""

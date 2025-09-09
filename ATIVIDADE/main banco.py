@@ -1,3 +1,4 @@
+
 import mysql.connector
 
 CONFIG_BANCO = {
