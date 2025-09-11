@@ -18,7 +18,7 @@ class BancoDeDados:
         self.cursor.execute('''CREATE TABLE IF NOT EXISTS alunos (
                             id INTEGER PRIMARY KEY AUTOINCREMENT,
                             nome TEXT NOT NULL,
-                            matricula TEXT NOT NULL,''')
+                            matricula TEXT NOT NULL)''')
         self.conexao.commit()
         
     # tabela Professor
