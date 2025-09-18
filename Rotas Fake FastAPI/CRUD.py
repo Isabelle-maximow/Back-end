@@ -73,3 +73,7 @@ async def update_item (item_id: int):
                    quantidade = ?  WHERE id = ?""",
         item.nome, item.price, item.quantidade)
     conexao.commit()
+    atualizado = cursor.rowcount #atualizar o dado na linha banco
+    if atualizado:
+        return {"mensagem": f"item{item_id} atualizadp"}
+    return {"ERRO"}
