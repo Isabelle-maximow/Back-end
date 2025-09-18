@@ -41,12 +41,35 @@ async def listar_itens():
     return{"itens":todos_itens}
 
 # endpoint pegar pelo id:
-@app.get("/")
-async def get_itens():
+@app.get("/itens-nome/{item_nome}")
+async def get_item_nome(item_nome: str):
     conexao = sqlite3.connect(BANCO)
     cursor = conexao.cursor()
-    cursor.execute("""SELECT * FROM itens""")
+    cursor.execute("""SELECT * FROM itens WHERE nome = ?""",
+                   (item_nome,))
     itens = cursor.fetchall()
     if itens:
         return{"item": itens}
     return{"ERRO": "Item não encontrado"}
+
+# endpoint criar item (post)
+@app.post("/itens-criar/")
+async def criar_item(item: Item):
+    conexao = sqlite3.connect(BANCO)
+    cursor = conexao.cursor()
+    cursor.execute("""INSERT INTO itens (
+        nome, price, quantidade) VALUES (?,?,?)""",
+        item.nome, item.price, item.quantidade)
+    conexao.commit()
+    item_id = cursor.lastrowid # criar o item na ultima linha
+    return {"id": item_id, "mensagem": "item criado"}
+    
+# endpoint PUT atualizar dados
+@app.put("/itens-atualizar/{item_id}")
+async def update_item (item_id: int):
+    conexao = sqlite3.connect(BANCO)
+    cursor = conexao.cursor()
+    cursor.execute("""UPDATE itens SET nome = ?, price = ?, 
+                   quantidade = ?  WHERE id = ?""",
+        item.nome, item.price, item.quantidade)
+    conexao.commit()
