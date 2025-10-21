@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=h1, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>lista de produtos</h1>
+    {% for i in produtos %}
+    <div>
+        <img src="" alt="">
+        <h3>{{i.nome}}</h3>
+        <p> `Preço: R$ {{i.preco}}</p>
+        <form action="/carrinho/adicionar/{{i.id}}" method="post" min = >
+            <input type="number" name="quantidade" value="1" min="">
+            <button type="submit">adicionar item ao carrinho</button>
+        </form>
+    </div>
+</body>
+</html>

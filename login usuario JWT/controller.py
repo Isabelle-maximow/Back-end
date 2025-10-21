@@ -1,6 +1,8 @@
 #controller.py
 from models import Produto,Usuario#import novo
 from auth import gerar_hash_senha,verificar_hash_senha, criar_token, verificar_token #import novo
+import os, shutil
+from models imports Produto, Usuario # tem mt mais 
 
 
 #Cadastro de usuário rotas de autenticação
@@ -52,4 +54,48 @@ def dashboard(request: Request):
     token = request.cookies.get("token")
     if not token or verificar_token(token):
         return RedirectReponse (url = "/", status_code = 303)
-    return templates.TemplateResponse("dashboard.html", {"request": request})
+    return templates.TemplateResponse("dashboard.html", {"request": request}
+
+# carrinho simples com memoria:
+carrinhos = {}
+# add item ao carrinho:
+@router.post ("/carrinho/adicionar/{produto_id}")
+def adicionar_carrinho(request: Request,
+                       produto_id: int, quantidade: int = Form(1),
+                       db: Session = Depends (get_db)):
+    token = request.cookies.get("token")
+    payload = verificar_token(token)
+    if not payload:
+        return RedirectResponse(url = "/login", status_code= 303)
+        email = payload.get("sub")
+        usuario = db.query(Usuario).filter_by(email=email).first()
+        produto = db.query(Produto).filter_by(id=produto_id).first()
+        if not produto:
+            return{"mensagem" : "produto não encontrado "}
+            carrinho = carrinhos.get(usuario.id, [])
+            carrinho.append({
+                "id": produto.id,
+                "nome": produto.nome,
+                "preco": produto.preco,
+                "quantidade" = quantidade
+            })
+            carrinhos[usuario.id] = carrinho 
+            return RedirectResponse(url = "/carrinho", status_code = 303)
+            
+            
+@router.get("/carrinho", response_class= HTMLResponse)
+def ver_carrinho(request: Request, db: Session = Depends(get_db)):
+    token = request.cookies.get("token")
+    if not payload:
+        return RedirectResponse(url = "/login", status_code= 303)
+    email = payload.get("sub")
+    usuario = db.query(Usuario).filter_by(email=email).first()
+    carrinho = carrinhos.get(usuario.id, [])
+    total=sum(item["preco"]*item["quantidade"] for item in carrinho)
+    return templates.TemplateResponse("carrinho.html",{
+        "request":request,"carrinho":carrinho,"total":total
+    })
+    
+# finalizar checkout:
+@router.post("/checkout")
+def checkout(request: request, "carrinho": carrinho, "total: total")
