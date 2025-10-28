@@ -41,8 +41,11 @@ def login( request: Request, email: str = Form (...),
     if not usuario or not verificar_hash_senha(senha, usuario.senha):
         return {"mensagem": "Credenciais inválidas"}
     
-    # criando verificando e token:
-    token = criar_token ({"sub": usuario.email})
+    # criando verificando e token: COM O CAMPOS 'IS_ADMIN
+    token = criar_token ({"sub": usuario.email,
+                          "is_admin": usuario.is_admin})
+    
+    # criar um if .... COLOCAR AQUI 
     response = RedirectResponse(url= "/dashboard", status_code = 300)
     response.set_cookie(key = "token", value = token,
                         httponly = True)

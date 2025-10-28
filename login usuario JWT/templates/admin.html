@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel do admin</title>
+</head>
+<body>
+    <h2>Gerenciamento de produtos </h2>
+    <form action="/admin/produto" method="post" enctype="multipart/form-data">
+        <label for=""> Nome: </label><br>
+        <input type="text" name="nome" id=""> <br>
+        <label for="">Preço: </label><br>
+        <input type="number" step="0.01" name="preco" id=""><br>
+        <label for="">Quantidade</label>
+        <input type="number" step="1" name="quantidade" id=""><br>
+        <label for="">Imagem</label>
+        <input type="file" name="imagem" id=""><br>
+        <button type="submit">adicionar produto</button>
+    </form>
+
+    <h3> Produtos cadastrados: </h3>
+    <table border="1">
+        <tr>
+            <th>Nome</th><th>Preço</th><th>QTD</th><th>Imagem</th>
+        </tr>
+        {% for i in produtos %}
+        <tr>
+            <td>{{i.nome}}</td>
+            <td>{{i.preco}}</td>
+            <td>{{i.quantidade}}</td>
+            <td><img src=" "{{url_for('static', path = 'uploads/' +i.imagem)}}" alt=""></td>
+            <th>
+                <form action="admin/produto/deletar/{{i.id}}" method="post">
+                    <button type="submit">Deletar</button>
+                </form>
+            </th>
+        </tr>
+       
+    </table>
+</body>
+</html>
